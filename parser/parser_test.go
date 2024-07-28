@@ -161,6 +161,8 @@ func TestIntegerLiteralExpression(t *testing.T) {
 	if literal.Value != 5 {
 		t.Errorf("literal.Value not 5. got=%d", literal.Value)
 	}
+
+	if literal.TokenLiteral
 }
 
 func checkParserErrors(t *testing.T, p *Parser) {
