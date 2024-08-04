@@ -420,7 +420,7 @@ func (p *Parser) curPrecedence() int {
 
 // error stuff :3
 func (p *Parser) peekError(t token.TokenType) {
-	msg := fmt.Sprintf("expected next token to be %s. got=%s", t, p.peekToken.Type)
+	msg := fmt.Sprintf("expected next token to be '%s'. got='%s'", t, p.peekToken.Type)
 	p.errors = append(p.errors, msg)
 }
 
