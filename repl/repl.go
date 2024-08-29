@@ -4,7 +4,9 @@ import (
 	"bufio"
 	"fmt"
 	"io"
+	"monkey/eval"
 	"monkey/lexer"
+	"monkey/object"
 	"monkey/parser"
 )
 
@@ -24,17 +26,21 @@ const MONKEY = `           __,__
 
 func Start(in io.Reader, out io.Writer) {
 	scanner := bufio.NewScanner(in)
+	env := object.NewEnvironment()
 
 	for {
 		fmt.Print(PROMPT)
 
 		scanned := scanner.Scan()
 		if !scanned {
-			fmt.Printf("fuck")
 			return
 		}
 
 		line := scanner.Text()
+		if line == "quit" {
+			return
+		}
+
 		l := lexer.New(line)
 		p := parser.New(l)
 
@@ -44,8 +50,11 @@ func Start(in io.Reader, out io.Writer) {
 			continue
 		}
 
-		io.WriteString(out, program.String())
-		io.WriteString(out, "\n")
+		result := eval.Eval(program, env)
+		if result != nil {
+			io.WriteString(out, result.Inspect())
+			io.WriteString(out, "\n")
+		}
 	}
 }
 
